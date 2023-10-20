@@ -1,0 +1,32 @@
+app:
+  version: 1.0.0
+
+management:
+  endpoints:
+    web:
+      base-path: /api/v1/hexagonal/
+      exposure:
+        include: health,info,alive
+
+spring:
+  application:
+    name: hexagonal
+  profiles:
+    active:
+      - ${ANDQR_ENV_PROFILE:local}
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+logging:
+  path: logs
+  file:
+    name: logs/${spring.application.name}-api.log
+    max-size: 10MB
+  pattern:
+    file: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{35} : %msg%n"
+    rolling-file-name: logs/${spring.application.name}-api-%d{yyyy-MM-dd}-%i.log
+  level:
+    org.springframework.web: DEBUG
+    guru.springframework.controllers: DEBUG
+    org.hibernate: DEBUG
